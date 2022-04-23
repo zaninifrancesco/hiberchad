@@ -36,7 +36,7 @@ public class Person {
     private String surname;
     private int age;
     
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "person")
     private List<Products> products;
 
     public Person() {

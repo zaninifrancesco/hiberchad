@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -24,6 +26,10 @@ public class Products {
     
     private String name;
     private Float price;
+    
+    @ManyToOne
+    @JoinColumn(name="person_id", nullable=false)
+    private Person person;
 
     public Products() {
     }
@@ -33,6 +39,23 @@ public class Products {
         this.price = price;
     }
 
+    public Products(String name, Float price, Person person) {
+        this.name = name;
+        this.price = price;
+        this.person = person;
+    }
+    
+    
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    
     public String getName() {
         return name;
     }

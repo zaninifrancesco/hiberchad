@@ -33,7 +33,11 @@ public class Main {
             Products p2 = new Products("Carota", 4.0f);
             Products p3 = new Products("Fiorella", 1.0f);
             Person createPerson = DBManager.getInstance().createPerson("Gianvi", "ncenzo", 10,p1,p2);
+            System.out.println("ID of P1 = "+p1.getId());
+            System.out.println("ID of P2 = "+p2.getId());
             Person createPerson1 = DBManager.getInstance().createPerson("Donato", "Franca", 50,p1,p2,p3);
+            System.out.println("ID of P3 = "+p3.getId());
+            
             System.out.println(createPerson.getId());
         } catch (DBUniqueViolationException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

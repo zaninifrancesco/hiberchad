@@ -82,11 +82,15 @@ public class DBManager {
         session.beginTransaction();
 
         List<Products> listaProdotti = Arrays.asList(products);
+        
         Person person = new Person(name, surname, age);
+        for (Products p : listaProdotti) {
+            p.setPerson(person);
+        }
         person.setProducts(listaProdotti);
         
         try {
-            session.save(person);
+            session.saveOrUpdate(person);
         } catch (PersistenceException ex) {
             if (ex.getCause() instanceof ConstraintViolationException) {
                 throw new DBUniqueViolationException("Laboratory.name");
