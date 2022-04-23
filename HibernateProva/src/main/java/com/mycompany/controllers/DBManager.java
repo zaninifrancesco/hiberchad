@@ -15,6 +15,7 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import org.hibernate.Hibernate;
@@ -51,17 +52,17 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery q = cb.createQuery(Person.class);
-        Root root = q.from(Person.class);
-        root.fetch("products",JoinType.INNER);
-        q.select(root);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery query = criteriaBuilder.createQuery(Person.class);
+        Root root = query.from(Person.class);
+        root.fetch("products", JoinType.INNER); //gli dico di caricarmi anche i dati di products ( che sono LAZY) 
+        query.select(root).distinct(true);
+
+        List<Person> result = session.createQuery(query).list();
         
-        List<Person> result = session.createQuery(q).list();
+        System.out.println("result sizze = "+result.size());
 
 //        List<Person> result = session.createQuery("from Person", Person.class).list();
-
-        Hibernate.initialize(result);
         session.getTransaction().commit();
         session.close();
 

@@ -37,9 +37,8 @@ public class Main {
             System.out.println(createPerson.getId());
 
             List<Person> persons = DBManager.getInstance().getAllPerson();
-            JFrame frame = new JFrame();
-            frame.setVisible(true);
             System.out.println("................");
+            System.out.println("size of persons: "+persons.size());
             for (Person person : persons) {
                 System.out.println("person products size: " + person.getName() + " ha " + person.getProducts().size() + " prodotti");
 
