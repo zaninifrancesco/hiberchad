@@ -9,9 +9,15 @@ import com.mycompany.entities.Person;
 import com.mycompany.entities.Products;
 import com.mycompany.exceptions.DBBadParamaterException;
 import com.mycompany.exceptions.DBUniqueViolationException;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -45,8 +51,17 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        List<Person> result = session.createQuery("from Person", Person.class).list();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery q = cb.createQuery(Person.class);
+        Root root = q.from(Person.class);
+        root.fetch("products",JoinType.INNER);
+        q.select(root);
+        
+        List<Person> result = session.createQuery(q).list();
 
+//        List<Person> result = session.createQuery("from Person", Person.class).list();
+
+        Hibernate.initialize(result);
         session.getTransaction().commit();
         session.close();
 
@@ -71,7 +86,7 @@ public class DBManager {
         }
     }
 
-    public Person createPerson(String name, String surname, int age, Products ... products) throws DBUniqueViolationException, DBBadParamaterException {
+    public Person createPerson(String name, String surname, int age, Products... products) throws DBUniqueViolationException, DBBadParamaterException {
         if (name == null) {
             throw new DBBadParamaterException("name", DBBadParamaterException.ErrorType.NULL);
         }
@@ -82,13 +97,13 @@ public class DBManager {
         session.beginTransaction();
 
         List<Products> listaProdotti = Arrays.asList(products);
-        
+
         Person person = new Person(name, surname, age);
         for (Products p : listaProdotti) {
             p.setPerson(person);
         }
         person.setProducts(listaProdotti);
-        
+
         try {
             session.saveOrUpdate(person);
         } catch (PersistenceException ex) {

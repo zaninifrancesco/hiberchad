@@ -12,6 +12,7 @@ import com.mycompany.exceptions.DBUniqueViolationException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -36,6 +37,8 @@ public class Main {
             System.out.println(createPerson.getId());
 
             List<Person> persons = DBManager.getInstance().getAllPerson();
+            JFrame frame = new JFrame();
+            frame.setVisible(true);
             System.out.println("................");
             for (Person person : persons) {
                 System.out.println("person products size: " + person.getName() + " ha " + person.getProducts().size() + " prodotti");
