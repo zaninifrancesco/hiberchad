@@ -19,36 +19,34 @@ import java.util.logging.Logger;
  */
 public class Main {
 
-    
     public static void main(String[] args) {
         System.out.println("dsadsad");
-        
-        
-        
-        
-        List<Person> persons = DBManager.getInstance().getAllPerson();
-        
+
         try {
             Products p1 = new Products("Cipolla", 2.3f);
             Products p2 = new Products("Carota", 4.0f);
             Products p3 = new Products("Fiorella", 1.0f);
-            Person createPerson = DBManager.getInstance().createPerson("Gianvi", "ncenzo", 10,p1,p2);
-            System.out.println("ID of P1 = "+p1.getId());
-            System.out.println("ID of P2 = "+p2.getId());
-            Person createPerson1 = DBManager.getInstance().createPerson("Donato", "Franca", 50,p1,p2,p3);
-            System.out.println("ID of P3 = "+p3.getId());
-            
+            Products p4 = new Products("Gino", 1.0f);
+            Person createPerson = DBManager.getInstance().createPerson("Gianvi", "ncenzo", 10, p1, p2);
+            System.out.println("ID of P1 = " + p1.getId());
+            System.out.println("ID of P2 = " + p2.getId());
+            Person createPerson1 = DBManager.getInstance().createPerson("Donato", "Franca", 50, p3, p4);
+            System.out.println("ID of P3 = " + p3.getId());
+
             System.out.println(createPerson.getId());
+
+            List<Person> persons = DBManager.getInstance().getAllPerson();
+            System.out.println("................");
+            for (Person person : persons) {
+                System.out.println("person products size: " + person.getName() + " ha " + person.getProducts().size() + " prodotti");
+
+            }
         } catch (DBUniqueViolationException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DBBadParamaterException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        System.out.println(persons.size());
+
     }
-    
-    
+
 }
